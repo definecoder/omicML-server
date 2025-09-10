@@ -23,6 +23,26 @@ router = APIRouter(prefix='/operations', tags=['operation'])
 R_CODE_DIRECTORY = os.path.join(os.path.dirname(__file__), '../code')
 
 
+@router.post('/preinit')
+async def preinit(user_info: dict = Depends(verify_token)):
+
+    try:
+
+        os.makedirs(os.path.join(R_CODE_DIRECTORY, str(user_info['user_id'])), exist_ok=True)
+        os.makedirs(os.path.join(R_CODE_DIRECTORY, str(user_info['user_id']), "rds"), exist_ok=True)
+        os.makedirs(os.path.join(R_CODE_DIRECTORY, str(user_info['user_id']), "files"), exist_ok=True)
+        os.makedirs(os.path.join(R_CODE_DIRECTORY, str(user_info['user_id']), "figures"), exist_ok=True)
+
+        FILE_DIR = os.path.join(R_CODE_DIRECTORY, f"{user_info['user_id']}", "files")
+        robjects.r['setwd'](R_CODE_DIRECTORY + f"/{user_info['user_id']}")
+        
+
+        return {"message": "Process initialized"}   
+
+    except Exception as e:
+        return {"message": "Error in preinit", "error": str(e)}
+
+
 
 @router.post('/init')
 async def init(count_data: UploadFile = File(...), meta_data: UploadFile = File(...), user_info: dict = Depends(verify_token)):
