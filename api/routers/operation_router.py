@@ -131,6 +131,7 @@ async def upload_merge(merged_df_data_normalized_t: UploadFile = File(...), user
     API endpoint to upload and save a merge file (merged_df_data_normalized_t.csv) directly to the files directory.
     """
     try:
+        os.chdir(R_CODE_DIRECTORY + "/..")
         # Define user-specific directories
         user_id = str(user_info['user_id'])
         files_dir = os.path.join(R_CODE_DIRECTORY, user_id, "files")
@@ -173,6 +174,7 @@ async def batch_effect_correction(user_info: dict = Depends(verify_token)):
 
 
         print("before")
+        print(os.getcwd())
 
         # Check if input file exists
         if not os.path.exists(input_file):
@@ -257,7 +259,7 @@ async def z_score_normalize(user_info: dict = Depends(verify_token)):
             return {
                 "message": result["message"],
                 
-                "normalized_file": f"{BASE_URL}/files/{user_info['user_id']}/z_score_normalized_data.csv"
+                "normalized_file": f"{BASE_URL}/files/{user_info['user_id']}/z_score_normalized_data_of_ML_DF.csv"
             }
         else:
             return {
@@ -286,7 +288,7 @@ async def dimensionality_reduction(user_info: dict = Depends(verify_token)):
         # Define input file and output directory paths
         user_id = str(user_info['user_id'])
         input_file = os.path.join(
-            "code", user_id, "files", "z_score_normalized_data.csv"
+            "code", user_id, "files", "z_score_normalized_data_of_ML_DF.csv"
         )
         output_dir = os.path.join("code", user_id, "files")
 
@@ -328,7 +330,7 @@ async def correlation_clustermap(user_info: dict = Depends(verify_token)):
     try:
         # Define input and output paths
         user_id = str(user_info['user_id'])
-        input_file = os.path.join("code", user_id, "files", "z_score_normalized_data.csv")
+        input_file = os.path.join("code", user_id, "files", "z_score_normalized_data_of_ML_DF.csv")
         output_dir = os.path.join("code", user_id, "files")
         drop_column = "condition"
 
@@ -374,7 +376,7 @@ async def feature_selection_model(
     try:
         # Define file paths
         user_id = str(user_info['user_id'])
-        input_file = os.path.join("code", user_id, "files", "z_score_normalized_data.csv")
+        input_file = os.path.join("code", user_id, "files", "z_score_normalized_data_of_ML_DF.csv")
         output_dir = os.path.join("code", user_id, "files")
 
         # Verify input file exists
@@ -413,7 +415,7 @@ from code.code import benchmark_models
 async def benchmark_models_api(user_info: dict = Depends(verify_token)):
     try:
         user_id = str(user_info['user_id'])
-        input_file = os.path.join("code", user_id, "files", "selected_features.csv")
+        input_file = os.path.join("code", user_id, "files", "selected_features_RFE_RF.csv")
         output_dir = os.path.join("code", user_id, "files")
         os.makedirs(output_dir, exist_ok=True) 
         
@@ -464,7 +466,7 @@ async def top10_features(model_name: str = Form(...), user_info: dict = Depends(
     try:
         # Define file paths
         user_id = str(user_info['user_id'])
-        reduced_df_path = os.path.join("code", user_id, "files", "selected_features.csv")
+        reduced_df_path = os.path.join("code", user_id, "files", "selected_features_RFE_RF.csv")
         output_dir = os.path.join("code", user_id, "files")
 
 
@@ -514,7 +516,7 @@ async def visualize_dimensions_api(
     try:
         # Define file paths
         user_id = str(user_info['user_id'])
-        input_file = os.path.join("code", user_id, "files", "top10_features_Extra Trees.csv")
+        input_file = os.path.join("code", user_id, "files", "top10_features_extra_trees.csv")
         output_dir = os.path.join("code", user_id, "files")
 
         # Ensure the input file exists
@@ -553,7 +555,7 @@ async def rank_features_api(
     try:
         # Define file paths
         user_id = str(user_info['user_id'])
-        input_file = os.path.join("code", user_id, "files", "top10_features_Extra Trees.csv")
+        input_file = os.path.join("code", user_id, "files", "top10_features_extra_trees.csv")
         output_dir = os.path.join("code", user_id, "files")
 
         # Ensure the input file exists
@@ -597,7 +599,7 @@ async def evaluate_model_features_api(
     try:
         # Define file paths
         user_id = str(user_info['user_id'])
-        input_file = os.path.join("code", user_id, "files", "top10_features_Extra Trees.csv")
+        input_file = os.path.join("code", user_id, "files", "top10_features_extra_trees.csv")
         output_dir = os.path.join("code", user_id, "files")
 
         # Ensure the input file exists
@@ -1215,6 +1217,10 @@ async def run_mapping_plotting(request: MappingPlottingRequest, user_info: dict 
     """
     try:
         # Define file paths
+
+        os.chdir(R_CODE_DIRECTORY + "/..")
+        print(os.getcwd())
+
         user_id = str(user_info['user_id'])
         r_script_path = "string/String_Workflow_Update_v3_Feb19.R"
         output_dir = os.path.join("code", user_id, "files", "string")

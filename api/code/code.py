@@ -292,8 +292,8 @@ def plot_correlation_clustermap(input_file, output_dir, drop_column, user_info):
         plt.close()
 
         corr_csv = f"{BASE_URL}/files/{user_info['user_id']}/Highly_Correlated_Features.csv"
-        corr_pdf = f"{BASE_URL}/files/{user_info['user_id']}/Pearson_Correlation_Clustermap.pdf"
-        corr_png = f"{BASE_URL}/files/{user_info['user_id']}/Pearson_Correlation_Clustermap.png"
+        corr_pdf = f"{BASE_URL}/files/{user_info['user_id']}/Pearson_Correlation_Clustermap_of_All_Features.pdf"
+        corr_png = f"{BASE_URL}/files/{user_info['user_id']}/Pearson_Correlation_Clustermap_of_All_Features.png"
         return {
             "message": "Correlation clustermap created successfully.",
             "output_files": {
@@ -592,7 +592,7 @@ def benchmark_models(input_file, output_dir, user_info):
         fig.savefig(pdf_path, dpi=300, bbox_inches='tight')
 
         metrics_csv = f"{BASE_URL}/files/{user_info['user_id']}/ML_classifiers_benchmarking_results.csv"
-        png_path = f"{BASE_URL}/files/{user_info['user_id']}/model_benchmarking_curves.png"
+        png_path = f"{BASE_URL}/files/{user_info['user_id']}/ML_classifiers_benchmarking_curves.png"
         return {
             "metrics": metrics_df.to_dict(orient="records"),
             "metrics_path": metrics_csv,
@@ -652,15 +652,12 @@ def get_model_and_importance_with_top10(metrics_df, best_models, reduced_df, sel
     top10_df = reduced_df[columns_to_include].copy()
 
     # File paths
-    user_id = user_info['user_id']
-    user_folder = os.path.join(output_dir, 'files', str(user_id))
-    os.makedirs(user_folder, exist_ok=True)
 
     base_fname = selected_model_name.replace(' ', '_').lower()
-    full_csv_path = os.path.join(user_folder, f"{base_fname}_feature_importance.csv")
-    top10_csv_path = os.path.join(user_folder, f"top10_features_{base_fname}.csv")
-    plot_png_path = os.path.join(user_folder, f"top10_feature_importance_{base_fname}.png")
-    plot_pdf_path = os.path.join(user_folder, f"top10_feature_importance_{base_fname}.pdf")
+    full_csv_path = os.path.join(output_dir, f"{base_fname}_feature_importance.csv")
+    top10_csv_path = os.path.join(output_dir, f"top10_features_{base_fname}.csv")
+    plot_png_path = os.path.join(output_dir, f"top10_feature_importance_{base_fname}.png")
+    plot_pdf_path = os.path.join(output_dir, f"top10_feature_importance_{base_fname}.pdf")
 
     # Save full importance CSV
     importance_df.to_csv(full_csv_path, index=False)
@@ -681,7 +678,7 @@ def get_model_and_importance_with_top10(metrics_df, best_models, reduced_df, sel
     plt.close()
 
     # Return as API-ready paths
-    base_url = f"{BASE_URL}/files/{user_id}"
+    base_url = f"{BASE_URL}/files/{user_info['user_id']}"
     return {
         "top10_features_path": f"{base_url}/top10_features_{base_fname}.csv",
         "top10_plot_path": f"{base_url}/top10_feature_importance_{base_fname}.png",
@@ -929,12 +926,10 @@ def rank_features(top10_df, selected_model, param_grids, classifiers, output_dir
         # --- Save metrics ---
         metrics_df = pd.DataFrame(metrics_scores).sort_values(by='AUPRC', ascending=False)
 
-        # Save paths
-        user_id = user_info['user_id']
-        user_folder = os.path.join(output_dir, 'files', str(user_id))
-        os.makedirs(user_folder, exist_ok=True)
+        
+        
 
-        csv_path = os.path.join(user_folder, 'single_feature_metrics_ranking.csv')
+        csv_path = os.path.join(output_dir, 'single_feature_metrics_ranking.csv')
         metrics_df.to_csv(csv_path, index=False)
 
         # --- Plotting ---
@@ -978,14 +973,14 @@ def rank_features(top10_df, selected_model, param_grids, classifiers, output_dir
         plt.tight_layout(rect=[0, 0, 1, 0.96])
 
         # Save figures
-        plot_png = os.path.join(user_folder, 'single_feature_model_performance_landscape.png')
-        plot_pdf = os.path.join(user_folder, 'single_feature_model_performance_landscape.pdf')
+        plot_png = os.path.join(output_dir, 'single_feature_model_performance_landscape.png')
+        plot_pdf = os.path.join(output_dir, 'single_feature_model_performance_landscape.pdf')
         fig.savefig(plot_png, dpi=300, bbox_inches='tight')
         fig.savefig(plot_pdf, dpi=300, bbox_inches='tight')
         plt.close()
 
         # Return URLs
-        base_url = f"{BASE_URL}/files/{user_id}"
+        base_url = f"{BASE_URL}/files/{user_info['user_id']}"
         return json.dumps({
             "message": "Feature ranking and plotting completed successfully.",
             "ranking_file": f"{base_url}/single_feature_metrics_ranking.csv",
@@ -1087,11 +1082,9 @@ def evaluate_model_with_features(top10_df, top10_df_array, selected_model, param
         metrics_df = pd.DataFrame(performance_metrics)
         metrics_df.sort_values(by='AUPRC', ascending=False, inplace=True)
 
-        user_id = user_info['user_id']
-        user_folder = os.path.join(output_dir, 'files', str(user_id))
-        os.makedirs(user_folder, exist_ok=True)
 
-        metrics_csv_path = os.path.join(user_folder, 'biomarker_algorithms_performance.csv')
+
+        metrics_csv_path = os.path.join(output_dir, 'biomarker_algorithms_performance.csv')
         metrics_df.to_csv(metrics_csv_path, index=False)
 
         # Plotting
@@ -1119,8 +1112,8 @@ def evaluate_model_with_features(top10_df, top10_df_array, selected_model, param
         fig.suptitle('AUPRC and AUROC Plots of Gene-Models', fontsize=16, y=1.02)
         plt.tight_layout(rect=[0, 0, 1, 0.96])
 
-        png_path = os.path.join(user_folder, 'biomarker_algorithms_performance_metrics.png')
-        pdf_path = os.path.join(user_folder, 'biomarker_algorithms_performance_metrics.pdf')
+        png_path = os.path.join(output_dir, 'biomarker_algorithms_performance_metrics.png')
+        pdf_path = os.path.join(output_dir, 'biomarker_algorithms_performance_metrics.pdf')
         fig.savefig(png_path, dpi=300, bbox_inches='tight')
         fig.savefig(pdf_path, bbox_inches='tight')
         plt.close()
@@ -1134,11 +1127,11 @@ def evaluate_model_with_features(top10_df, top10_df_array, selected_model, param
             raise ValueError("Some selected features are missing in top10_df.")
 
         final_df = top10_df[selected_features + ['condition']]
-        final_df_path = os.path.join(user_folder, 'final_selected_biomarker_algorithms_df.csv')
+        final_df_path = os.path.join(output_dir, 'final_selected_biomarker_algorithms_df.csv')
         final_df.to_csv(final_df_path, index=False)
 
         # Return paths and results
-        base_url = f"{BASE_URL}/files/{user_id}"
+        base_url = f"{BASE_URL}/files/{user_info['user_id']}"
         return {
             "message": "Evaluation completed successfully.",
             "metrics_file": f"{base_url}/biomarker_algorithms_performance.csv",
@@ -1375,17 +1368,14 @@ def evaluate_final_model(final_df_path, selected_model, param_grids, classifiers
 
         metrics_df = pd.DataFrame([train_metrics, test_metrics])
 
-        # Create user folder
-        user_id = user_info['user_id']
-        user_folder = os.path.join(output_dir, 'files', str(user_id))
-        os.makedirs(user_folder, exist_ok=True)
+        
 
         # Save metrics CSV
-        metrics_csv_path = os.path.join(user_folder, 'final_model_metrics_summary.csv')
+        metrics_csv_path = os.path.join(output_dir, 'final_model_metrics_summary.csv')
         metrics_df.drop(columns=['Confusion Matrix']).to_csv(metrics_csv_path, index=False)
 
         # Save model
-        model_path = os.path.join(user_folder, 'final_model.joblib')
+        model_path = os.path.join(output_dir, 'final_model.joblib')
         dump(tuned_model, model_path)
 
         # Plot PR and ROC curves
@@ -1415,7 +1405,7 @@ def evaluate_final_model(final_df_path, selected_model, param_grids, classifiers
         fig.suptitle('Performance of the Final Model (Train vs Test)', fontsize=15, y=1.02)
         plt.tight_layout(rect=[0, 0, 1, 0.95])
 
-        pr_roc_png = os.path.join(user_folder, 'final_model_performance.png')
+        pr_roc_png = os.path.join(output_dir, 'final_model_performance.png')
         plt.savefig(pr_roc_png, dpi=300, bbox_inches='tight')
         plt.close()
 
@@ -1429,12 +1419,12 @@ def evaluate_final_model(final_df_path, selected_model, param_grids, classifiers
         axes[1].set_title("Test Confusion Matrix")
         fig.suptitle('Confusion Matrices of Final Model: Train vs Test', fontsize=16)
         plt.tight_layout(rect=[0, 0, 1, 0.95])
-        cm_png = os.path.join(user_folder, 'final_model_confusion_matrix.png')
+        cm_png = os.path.join(output_dir, 'final_model_confusion_matrix.png')
         plt.savefig(cm_png, dpi=300, bbox_inches='tight')
         plt.close()
 
         # Return URLs
-        base_url = f"{BASE_URL}/files/{user_id}"
+        base_url = f"{BASE_URL}/files/{user_info['user_id']}"
         return {
             "message": "Final model evaluation completed successfully.",
             "train_metrics": train_metrics,
