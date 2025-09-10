@@ -4,7 +4,7 @@ args <- commandArgs(trailingOnly = TRUE)
 id <- args[1]
 library(here)
 
-setwd(here("api", "code", id, "heatmap"))
+setwd(here(id, "heatmap"))
 
 source("../../1_Extract_LFC.R")
 source("../../2_plot_heatmap.R")
@@ -21,7 +21,7 @@ result <- extract_lfc_multiple(gene_list, csv_files, column_names)
 
 # Save the result to a CSV file with a timestamp
 timestamp <- format(Sys.time(), "%Y.%m.%d_%H.%M.%S")
-file_name <- paste0("files/Heatmap_data.csv")
+file_name <- paste0("files/heatmap_data.csv")
 write.csv(result, file = file_name, row.names = FALSE)
 
 cat("Data extraction complete. Saved to", file_name, "\n")
