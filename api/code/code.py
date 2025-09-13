@@ -856,11 +856,15 @@ from sklearn.metrics import (
 )
 from sklearn.base import clone
 
-def rank_features(top10_df, selected_model, param_grids, classifiers, output_dir, user_info):
+def rank_features(top10_df_path, selected_model, param_grids, classifiers, output_dir, user_info):
     """
     Rank top features based on single-feature model performance (AUPRC, AUROC, etc.).
     Saves CSV and plots ROC/PR curves for each.
     """
+
+    top10_df = pd.read_csv(top10_df_path)
+
+    print('top10_df:', top10_df.head())
 
     try:
         # --- Validate inputs ---
@@ -932,6 +936,9 @@ def rank_features(top10_df, selected_model, param_grids, classifiers, output_dir
         csv_path = os.path.join(output_dir, 'single_feature_metrics_ranking.csv')
         metrics_df.to_csv(csv_path, index=False)
 
+
+        print("okay till plotting")
+
         # --- Plotting ---
         fig, axes = plt.subplots(1, 2, figsize=(15, 6))
 
@@ -981,19 +988,20 @@ def rank_features(top10_df, selected_model, param_grids, classifiers, output_dir
 
         # Return URLs
         base_url = f"{BASE_URL}/files/{user_info['user_id']}"
-        return json.dumps({
+        return {
             "message": "Feature ranking and plotting completed successfully.",
             "ranking_file": f"{base_url}/single_feature_metrics_ranking.csv",
             "plot_png": f"{base_url}/single_feature_model_performance_landscape.png",
             "plot_pdf": f"{base_url}/single_feature_model_performance_landscape.pdf",
             "metrics": metrics_df.to_dict(orient="records")
-        })
+        }
 
     except Exception as e:
-        return json.dumps({
+        print(e)
+        return {
             "message": "Error during feature ranking and plotting.",
             "error": str(e)
-        })
+        }
 
 
 
@@ -1009,7 +1017,7 @@ from sklearn.metrics import (
     matthews_corrcoef, log_loss
 )
 
-def evaluate_model_with_features(top10_df, top10_df_array, selected_model, param_grids, classifiers, output_dir, user_info):
+def evaluate_model_with_features(top10_df_path, selected_model, param_grids, classifiers, output_dir, user_info):
     """
     Evaluate the performance of models using top-N features (10 to 1), save plots and metrics, and select the best feature subset.
     """
@@ -1017,6 +1025,10 @@ def evaluate_model_with_features(top10_df, top10_df_array, selected_model, param
         # Prepare cross-validation
         outer_cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=123)
         inner_cv = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
+
+        top10_df = pd.read_csv(top10_df_path)
+
+        top10_df_array = top10_df.drop(columns='condition').columns.to_numpy()
 
         # Storage
         roc_curves = []

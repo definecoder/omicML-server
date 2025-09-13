@@ -455,6 +455,7 @@ async def benchmark_models_api(user_info: dict = Depends(verify_token)):
 from code.code import get_model_and_importance_with_top10, best_models
 from fastapi import Form
 global_model_name  = "Extra Trees" 
+global_basef_name = "top10_features_extra_trees.csv"
 
 @router.post('/top10-features')
 async def top10_features(model_name: str = Form(...), user_info: dict = Depends(verify_token)):
@@ -491,6 +492,8 @@ async def top10_features(model_name: str = Form(...), user_info: dict = Depends(
             user_info=user_info
         )
 
+        global_basef_name = result['top10_features_path']
+
         return {
             "message": "Top 10 features extracted successfully.",
             "top10_features": result["top10_features"],
@@ -516,7 +519,7 @@ async def visualize_dimensions_api(
     try:
         # Define file paths
         user_id = str(user_info['user_id'])
-        input_file = os.path.join("code", user_id, "files", "top10_features_extra_trees.csv")
+        input_file = os.path.join("code", user_id, "files", global_basef_name)
         output_dir = os.path.join("code", user_id, "files")
 
         # Ensure the input file exists
@@ -546,7 +549,7 @@ async def visualize_dimensions_api(
 from code.code import rank_features, param_grids, classifiers
 
 @router.get('/evaluate-single-features')
-async def rank_features_api(
+async def evaluate_single_features(
     user_info: dict = Depends(verify_token)
 ):
     """
@@ -555,7 +558,7 @@ async def rank_features_api(
     try:
         # Define file paths
         user_id = str(user_info['user_id'])
-        input_file = os.path.join("code", user_id, "files", "top10_features_extra_trees.csv")
+        input_file = os.path.join("code", user_id, "files", global_basef_name)
         output_dir = os.path.join("code", user_id, "files")
 
         # Ensure the input file exists
@@ -567,6 +570,8 @@ async def rank_features_api(
 
         # Call the feature ranking function
         result = rank_features(input_file, global_model_name, param_grids, classifiers, output_dir, user_info)
+
+        print('result: ', result)
 
         # Check for errors in the result
         if "error" in result:
@@ -609,9 +614,14 @@ async def evaluate_model_features_api(
         # Call the function
         result = evaluate_model_with_features(input_file, global_model_name, param_grids, classifiers, output_dir, user_info)
 
+        print('result: ', result)
+
         # Handle errors
         if "error" in result:
             return {"message": "Evaluation failed.", "error": result["error"]}
+
+
+        
 
         return {
             "message": result["message"],
@@ -637,7 +647,7 @@ async def visualize_dimensions_api(
     try:
         # Define file paths
         user_id = str(user_info['user_id'])
-        input_file = os.path.join("code", user_id, "files", "final_selected_features_auprc.csv")
+        input_file = os.path.join("code", user_id, "files", "final_selected_biomarker_algorithms_df.csv")
         output_dir = os.path.join("code", user_id, "files")                
 
         # Ensure the input file exists
@@ -677,7 +687,7 @@ async def evaluate_final_model_api(
     try:
         # Define file paths
         user_id = str(user_info['user_id'])
-        final_df_path = os.path.join("code", user_id, "files", "final_selected_features_auprc.csv")
+        final_df_path = os.path.join("code", user_id, "files", "final_selected_biomarker_algorithms_df.csv")
         output_dir = os.path.join("code", user_id, "files")
 
         # Ensure the input file exists
