@@ -14,7 +14,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # Your JWT secret and algorithm
 SECRET_KEY = "oiuv5135ehr8vygr8vy3g8z"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 4320 # 3 Days
 
 
 
