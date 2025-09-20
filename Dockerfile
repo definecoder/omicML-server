@@ -90,7 +90,7 @@ WORKDIR /code/api
 
 EXPOSE 8000
 
-CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "main:app", "--workers", "4", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "main:app", "-k", "uvicorn.workers.UvicornWorker", "--workers", "4", "--bind", "0.0.0.0:8000", "--timeout", "600", "--worker-connections", "30"]
 # CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 # docker rm -f plgl-server && docker build -t wonderful_rubin . && docker run --name plgl-server -p 8000:8000 -d wonderful_rubin:latest
