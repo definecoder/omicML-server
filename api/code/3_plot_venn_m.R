@@ -28,13 +28,13 @@ plot_and_save_venn <- function(gene_lists, reg) {
     label_color = "grey10",    # text color
     label_size  = 3.6,         # text size
     edge_size   = 0.8          # circle edge thickness
-  ) +
-    scale_fill_gradient(low = "#c6dbef", high = "#08306b", name = "count") +
-    theme_void() +                       # clean white background (no dark bg)
-    theme(
-      legend.position = "right",
-      legend.title = element_text(size = 10),
-      legend.text  = element_text(size = 9)
+  # ) +
+  #   scale_fill_gradient(low = "#c6dbef", high = "#08306b", name = "count") +
+  #   theme_void() +                       # clean white background (no dark bg)
+  #   theme(
+  #     legend.position = "right",
+  #     legend.title = element_text(size = 10),
+  #     legend.text  = element_text(size = 9)
     )
 
   # Save the plot in different formats with reg in the filename
