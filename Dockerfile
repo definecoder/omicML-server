@@ -34,6 +34,7 @@ RUN apt-get update && apt-get install -y \
     libcairo2-dev \
     libharfbuzz-dev \
     libfribidi-dev \
+    libwebp-dev \
     libfontconfig1-dev \
     pkg-config \
     && locale-gen en_US.UTF-8 \

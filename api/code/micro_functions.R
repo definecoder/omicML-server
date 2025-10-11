@@ -3,30 +3,53 @@
 print("loading micro functions")
 
 load_and_install_libraries <- function() {
-    # Define required packages
-    required_packages <- c("readr", "limma", "umap", "ggplot2", "Rtsne", "ape", "mice", "tidyverse")
+    # CRAN packages
+    cran_packages <- c("readr", "limma", "umap", "ggplot2", "Rtsne", "ape", "mice", "tidyverse")
+
+    # Bioconductor packages
+    bioc_packages <- c("DESeq2", "apeglm", "impute", "WGCNA")
 
     # Ensure BiocManager is available
     if (!requireNamespace("BiocManager", quietly = TRUE)) {
-        install.packages("BiocManager")
+        install.packages("BiocManager", repos = "http://cran.us.r-project.org")
     }
 
-    # Helper function to install packages
-    install_if_missing <- function(pkg) {
+    # Helper function for CRAN packages
+    install_cran_if_missing <- function(pkg) {
         if (!requireNamespace(pkg, quietly = TRUE)) {
-            message(sprintf("Installing %s ...", pkg))
-            tryCatch({
-                install.packages(pkg, dependencies = TRUE)
-            }, error = function(e) {
-                message(sprintf("Attempting BiocManager install for %s ...", pkg))
-                try(BiocManager::install(pkg, ask = FALSE), silent = TRUE)
-            })
+            message(sprintf("Installing CRAN package: %s ...", pkg))
+            install.packages(pkg, dependencies = TRUE, repos = "http://cran.us.r-project.org")
+        }
+        # Retry loading until successful
+        if (!requireNamespace(pkg, quietly = TRUE)) {
+            stop(sprintf("Failed to install CRAN package: %s", pkg))
         }
         suppressPackageStartupMessages(library(pkg, character.only = TRUE))
     }
 
-    # Iterate over all packages
-    lapply(required_packages, install_if_missing)
+    # Helper function for Bioconductor packages
+    install_bioc_if_missing <- function(pkg) {
+        if (!requireNamespace(pkg, quietly = TRUE)) {
+            message(sprintf("Installing Bioconductor package: %s ...", pkg))
+            BiocManager::install(pkg, ask = FALSE)
+        }
+        if (!requireNamespace(pkg, quietly = TRUE)) {
+            stop(sprintf("Failed to install Bioconductor package: %s", pkg))
+        }
+        suppressPackageStartupMessages(library(pkg, character.only = TRUE))
+    }
+
+    # Install and load CRAN packages
+    for (pkg in cran_packages) {
+        install_cran_if_missing(pkg)
+    }
+
+    # Install and load Bioconductor packages
+    for (pkg in bioc_packages) {
+        install_bioc_if_missing(pkg)
+    }
+
+    message("All packages installed and loaded successfully!")
 }
 
 impute_missing_values_mice <- function(data) {

@@ -47,19 +47,26 @@ async def init(count_data: UploadFile = File(...), meta_data: UploadFile = File(
             print(getwd())
 
             load_and_install_libraries()
+            print("Libraries loaded successfully!")
 
             data_files <- load_and_preprocess_data("files/count_data.csv", "files/meta_data.csv")
+            print("Data loaded and preprocessed successfully!")
             count_data_subset <- data_files$count_data_subset_normalized
+            print("Count data subset created successfully!")
             sample_info <- data_files$sample_info
+            print("Sample info created successfully!")
 
             count_data_subset_cc <- complete_cases_fx(count_data_subset)
+            print("Complete cases identified successfully!")
             count_data_normalized <- normalize_data(count_data_subset_cc)
+            print("Data normalized successfully!")
 
 
-            saveRDS(sample_info, "rds/sample_info.rds")
+            saveRDS(sample_info, "rds/sample_info.rds")        
             saveRDS(count_data_subset, "rds/count_data_subset.rds")
             saveRDS(count_data_subset_cc, "rds/count_data_subset_cc.rds")
             saveRDS(count_data_normalized, "rds/count_data_normalized.rds")
+            print("RDS files saved successfully!")
             
         """)
 
