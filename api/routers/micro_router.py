@@ -51,7 +51,7 @@ async def init(count_data: UploadFile = File(...), meta_data: UploadFile = File(
 
             data_files <- load_and_preprocess_data("files/count_data.csv", "files/meta_data.csv")
             print("Data loaded and preprocessed successfully!")
-            count_data_subset <- data_files$count_data_subset_normalized
+            count_data_subset <- data_files$count_data_subset
             print("Count data subset created successfully!")
             sample_info <- data_files$sample_info
             print("Sample info created successfully!")
@@ -181,10 +181,28 @@ async def show_conditions(user_info: dict = Depends(verify_token)):
         return {"message": "Error in showing conditions", "error": str(e)}
 
 
+@router.get('/select_condition')
+async def select_condition(option: str, user_info: dict = Depends(verify_token)):
+    try:
+
+        robjects.r['setwd'](R_CODE_DIRECTORY + f"/{user_info['user_id']}/micro")
+
+        readRDS = robjects.r['readRDS']
+        sample_info_clean = readRDS("rds/sample_info.rds")
+
+        conditions = list(set(sample_info_clean.rx(True, 1)))
+
+        # coeffs are the all of the conditions except the given option: str
+        coeffs = [condition for condition in conditions if condition != option]
+    
+        return {"options": coeffs}
+    
+    except Exception as e:
+        return {"message": "Error in selecting condition", "error": str(e)}
 
 
 @router.get('/dge-analysis')
-async def volcano_plot(coeff: str, user_info: dict = Depends(verify_token)):
+async def volcano_plot(coeff: str, treat: str, user_info: dict = Depends(verify_token)):
 
     try:
 
@@ -194,6 +212,8 @@ async def volcano_plot(coeff: str, user_info: dict = Depends(verify_token)):
         f"""
             Reference <- "{coeff}"
             saveRDS(Reference, "rds/Reference.rds")
+            Treat <- "{treat}"
+            saveRDS(Treat, "rds/treatchoose.rds")            
         """)
 
         # print("etotuku no problem")
@@ -209,9 +229,11 @@ async def volcano_plot(coeff: str, user_info: dict = Depends(verify_token)):
 
         return {"message": "Volcano plot generated successfully!",
                 "results": {
+                    "histogram_img": f"{BASE_URL}/figures/micro/{user_info['user_id']}/histogram_pvalues.png",
+                    "histogram_pdf": f"{BASE_URL}/figures/micro/{user_info['user_id']}/histogram_pvalues.pdf",
                     "volcano_img": f"{BASE_URL}/figures/micro/{user_info['user_id']}/volcano_plot.png",
-                    "upregulated_genes" : f"{BASE_URL}/files/micro/{user_info['user_id']}/Upregulated_genes_{treat[0]}_vs_{coeff}.csv",
-                    "downregulated_genes" : f"{BASE_URL}/files/micro/{user_info['user_id']}/Downregulated_genes_{treat[0]}_vs_{coeff}.csv",
+                    "upregulated_genes" : f"{BASE_URL}/files/micro/{user_info['user_id']}/Upregulated_genes_{treat[0]}vs{coeff}.csv",
+                    "downregulated_genes" : f"{BASE_URL}/files/micro/{user_info['user_id']}/Downregulated_genes_{treat[0]}vs{coeff}.csv",
                     "resLFC" : f"{BASE_URL}/files/micro/{user_info['user_id']}/LFC.csv"
                 }
                }

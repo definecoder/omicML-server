@@ -1,5 +1,6 @@
 
 
+from importlib.resources import files
 from fastapi import APIRouter, File, UploadFile, Depends, Query, Body, HTTPException, Request
 from core.security import verify_token
 import rpy2.robjects as robjects
@@ -1036,6 +1037,24 @@ async def list_of_files(user_info: dict = Depends(verify_token)):
         if os.path.exists(directory):
             return [os.path.join(prefix, f) for f in os.listdir(directory)]
         return []
+    
+    def path_to_url(path, user_id):
+        """Convert a file path to a downloadable URL"""
+        parts = path.split('/')
+        if len(parts) >= 2:
+            # Handle paths like "micro/files/filename" or "files/filename"
+            if parts[0] in ['micro', 'annotation', 'heatmap', 'venn']:
+                # Path has subcategory: "micro/files/filename" -> "files/micro/{user_id}/filename"
+                subcategory = parts[0]
+                resource_type = parts[1]  # 'files' or 'figures'
+                filename = '/'.join(parts[2:]) if len(parts) > 2 else ''
+                return f"{BASE_URL}/{resource_type}/{subcategory}/{user_id}/{filename}"
+            else:
+                # Direct path: "files/filename" -> "files/{user_id}/filename"
+                resource_type = parts[0]  # 'files' or 'figures'
+                filename = '/'.join(parts[1:]) if len(parts) > 1 else ''
+                return f"{BASE_URL}/{resource_type}/{user_id}/{filename}"
+        return path
 
     try:
         USER_DIR = os.path.join(R_CODE_DIRECTORY, str(user_info['user_id']))
@@ -1047,27 +1066,18 @@ async def list_of_files(user_info: dict = Depends(verify_token)):
             safe_listdir(os.path.join(USER_DIR, "heatmap/files"), "heatmap/files/")
         )
 
-        return {"files": files}    
-    except Exception as e:
-        return {"message": "Error in listing files", "error": str(e)}
-
-
-@router.get('/list_of_annotated_files')
-async def list_of_annotated_files(user_info: dict = Depends(verify_token)):
-
-    def safe_listdir(directory, prefix=""):
-        if os.path.exists(directory):
-            return [os.path.join(prefix, f) for f in os.listdir(directory)]
-        return []
-
-    try:
-        USER_DIR = os.path.join(R_CODE_DIRECTORY, str(user_info['user_id']))
-
-        files = (
-            safe_listdir(os.path.join(USER_DIR, "annotation/files"), "annotation/files/")
+        figures = (
+            safe_listdir(os.path.join(USER_DIR, "figures"), "figures/") +
+            safe_listdir(os.path.join(USER_DIR, "micro/figures"), "micro/figures/") +
+            safe_listdir(os.path.join(USER_DIR, "annotation/figures"), "annotation/figures/") + 
+            safe_listdir(os.path.join(USER_DIR, "heatmap/figures"), "heatmap/figures/")
         )
+        
+        # Create downloadable_files with full URLs
+        all_files = files + figures
+        downloadable_files = [path_to_url(file_path, user_info['user_id']) for file_path in all_files]
 
-        return {"files": files}    
+        return {"files": files, "figures": figures, "downloadable_files": downloadable_files}    
     except Exception as e:
         return {"message": "Error in listing files", "error": str(e)}
 

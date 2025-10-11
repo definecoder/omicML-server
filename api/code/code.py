@@ -1417,8 +1417,10 @@ def evaluate_final_model(final_df_path, selected_model, param_grids, classifiers
         fig.suptitle('Performance of the Final Model (Train vs Test)', fontsize=15, y=1.02)
         plt.tight_layout(rect=[0, 0, 1, 0.95])
 
-        pr_roc_png = os.path.join(output_dir, 'final_model_performance.png')
+        pr_roc_png = os.path.join(output_dir, 'final_model_performance.png')  
+        pr_roc_pdf = os.path.join(output_dir, 'final_model_performance.pdf')      
         plt.savefig(pr_roc_png, dpi=300, bbox_inches='tight')
+        plt.savefig(pr_roc_pdf, dpi=300, bbox_inches='tight')
         plt.close()
 
         # Plot confusion matrices
@@ -1432,7 +1434,9 @@ def evaluate_final_model(final_df_path, selected_model, param_grids, classifiers
         fig.suptitle('Confusion Matrices of Final Model: Train vs Test', fontsize=16)
         plt.tight_layout(rect=[0, 0, 1, 0.95])
         cm_png = os.path.join(output_dir, 'final_model_confusion_matrix.png')
+        cm_pdf = os.path.join(output_dir, 'final_model_confusion_matrix.pdf')
         plt.savefig(cm_png, dpi=300, bbox_inches='tight')
+        plt.savefig(cm_pdf, dpi=300, bbox_inches='tight')
         plt.close()
 
         # Return URLs
