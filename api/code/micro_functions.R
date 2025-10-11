@@ -295,6 +295,7 @@ plot_boxplot <- function(count_data_subset, sample_info, title = "Boxplot") {
 
 # Function to plot the P-value distribution
 plot_pvalue_distribution <- function(topTable1, contrast_name, n_sig_genes) {
+    png(paste0("figures/histogram_pvalues", ".png")) 
     hist(topTable1$adj.P.Val,
         breaks = seq(0, 1, length = 21),
         col = "grey",
@@ -305,6 +306,7 @@ plot_pvalue_distribution <- function(topTable1, contrast_name, n_sig_genes) {
     )
     # Add text to indicate the number of significant genes
     mtext(paste("Number of genes with padj < 0.05:", n_sig_genes), side = 3, line = 0.5, adj = 0.5)
+    dev.off()
 }
 
 # Function to generate Volcano Plot
@@ -432,57 +434,58 @@ perform_differential_expression <- function(count_data_subset, sample_info, grou
     }
 
     # Select the treatment condition(s)
-    Treatment <- condition[condition != Reference]
+    # Treatment <- condition[condition != Reference]
 
-    for (treat in Treatment) {
-        cts <- paste(treat, Reference, sep = "-")
-        message("Contrast: ", cts)
-
-        cont.matrix <- makeContrasts(contrasts = cts, levels = design)
-        fit2 <- contrasts.fit(fit, cont.matrix)
-        fit2 <- eBayes(fit2)
-
-        # resLFC
-        topTable1 <- topTable(fit2, adjust = "fdr", number = Inf)
-
-        saveRDS(topTable1, "rds/topTable1.rds")
-        write.csv(topTable1, "files/LFC.csv")
-
-        # UPDATE_22_02_25
-        n_sig_genes <- sum(nrow(topTable1[topTable1$adj.P.Val < 0.05, ]))
-
-        # Call function to plot adjusted P-value distribution
-        plot_pvalue_distribution(topTable1, contrast_name = cts, n_sig_genes)
-
-        # Mark the regulated genes
-        UP_Genes <- topTable1[topTable1$logFC > 1 & topTable1$adj.P.Val < 0.05, ]
-        Down_Genes <- topTable1[topTable1$logFC < -1 & topTable1$adj.P.Val < 0.05, ]
+    treat <- readRDS("rds/treatchoose.rds")
 
 
-        print(nrow(UP_Genes))
+    cts <- paste(treat, Reference, sep = "-")
+    message("Contrast: ", cts)
 
-        message("Number of Upregulated Genes (logFC > 1, adj.P.Val < 0.05): ", nrow(UP_Genes))
-        message("Number of Downregulated Genes (logFC < -1, adj.P.Val < 0.05): ", nrow(Down_Genes))
+    cont.matrix <- makeContrasts(contrasts = cts, levels = design)
+    fit2 <- contrasts.fit(fit, cont.matrix)
+    fit2 <- eBayes(fit2)
 
-        # paste0("Upregulated_Genes_", treat, "_vs_", Reference, ".csv")
+    # resLFC
+    topTable1 <- topTable(fit2, adjust = "fdr", number = Inf)
 
-        up_file <- paste0("files/Upregulated_Genes_", treat, "_vs_", Reference, ".csv")
-        down_file <- paste0("files/Downregulated_Genes_", treat, "_vs_", Reference, ".csv")
+    saveRDS(topTable1, "rds/topTable1.rds")
+    write.csv(topTable1, "files/LFC.csv")
 
-        write.csv(UP_Genes, up_file)
-        write.csv(Down_Genes, down_file)
+    # UPDATE_22_02_25
+    n_sig_genes <- sum(nrow(topTable1[topTable1$adj.P.Val < 0.05, ]))
 
-        saveRDS(treat, "rds/treat.rds")
+    # Call function to plot adjusted P-value distribution
+    plot_pvalue_distribution(topTable1, contrast_name = cts, n_sig_genes)
+
+    # Mark the regulated genes
+    UP_Genes <- topTable1[topTable1$logFC > 1 & topTable1$adj.P.Val < 0.05, ]
+    Down_Genes <- topTable1[topTable1$logFC < -1 & topTable1$adj.P.Val < 0.05, ]
+
+
+    print(nrow(UP_Genes))
+
+    message("Number of Upregulated Genes (logFC > 1, adj.P.Val < 0.05): ", nrow(UP_Genes))
+    message("Number of Downregulated Genes (logFC < -1, adj.P.Val < 0.05): ", nrow(Down_Genes))
+
+    # paste0("Upregulated_Genes_", treat, "vs", Reference, ".csv")
+
+    up_file <- paste0("files/Upregulated_Genes_", treat, "vs", Reference, ".csv")
+    down_file <- paste0("files/Downregulated_Genes_", treat, "vs", Reference, ".csv")
+
+    write.csv(UP_Genes, up_file)
+    write.csv(Down_Genes, down_file)
+
+    saveRDS(treat, "rds/treat.rds")
 
 
 
-        # Plot volcano plot for each contrast
-        # png("figures/volcano_plot.png")
-        plot_volcano(topTable1, title = paste("Volcano Plot: ", treat, " vs ", Reference))
-        # dev.off()
+    # Plot volcano plot for each contrast
+    # png("figures/volcano_plot.png")
+    plot_volcano(topTable1, title = paste("Volcano Plot: ", treat, " vs ", Reference))
+    # dev.off()
 
-        # Ask the user if they want to highlight any specific gene(s)
-    }
+    # Ask the user if they want to highlight any specific gene(s)
 }
 
 
