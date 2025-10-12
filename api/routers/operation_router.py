@@ -605,7 +605,7 @@ async def evaluate_model_features_api(
     try:
         # Define file paths
         user_id = str(user_info['user_id'])
-        input_file = os.path.join("code", user_id, "files", "top10_features_extra_trees.csv")
+        input_file = os.path.join("code", user_id, "files", global_basef_name)
         output_dir = os.path.join("code", user_id, "files")
 
         # Ensure the input file exists
@@ -1062,15 +1062,18 @@ async def list_of_files(user_info: dict = Depends(verify_token)):
         files = (
             safe_listdir(os.path.join(USER_DIR, "files"), "files/") +
             safe_listdir(os.path.join(USER_DIR, "micro/files"), "micro/files/") +
-            safe_listdir(os.path.join(USER_DIR, "annotation/files"), "annotation/files/") + 
-            safe_listdir(os.path.join(USER_DIR, "heatmap/files"), "heatmap/files/")
+            [f for f in safe_listdir(os.path.join(USER_DIR, "annotation/files"), "annotation/files/") 
+             if os.path.basename(f).startswith("annotated")] + 
+            safe_listdir(os.path.join(USER_DIR, "heatmap/files"), "heatmap/files/") +
+            safe_listdir(os.path.join(USER_DIR, "venn/files"), "venn/files/")
         )
 
         figures = (
             safe_listdir(os.path.join(USER_DIR, "figures"), "figures/") +
             safe_listdir(os.path.join(USER_DIR, "micro/figures"), "micro/figures/") +
             safe_listdir(os.path.join(USER_DIR, "annotation/figures"), "annotation/figures/") + 
-            safe_listdir(os.path.join(USER_DIR, "heatmap/figures"), "heatmap/figures/")
+            safe_listdir(os.path.join(USER_DIR, "heatmap/figures"), "heatmap/figures/") +
+            safe_listdir(os.path.join(USER_DIR, "venn/figures"), "venn/figures/")
         )
         
         # Create downloadable_files with full URLs
@@ -1219,8 +1222,7 @@ async def upload_fibro_string(fibro_up_genes: UploadFile = File(...), user_info:
 class MappingPlottingRequest(BaseModel):
     species_name: str
     gene_symbols: list[str]
-    clustering_method1: str
-    clustering_method2: str
+    clustering_method: str
 
 @router.post("/string")
 async def run_mapping_plotting(request: MappingPlottingRequest, user_info: dict = Depends(verify_token)):
@@ -1231,8 +1233,7 @@ async def run_mapping_plotting(request: MappingPlottingRequest, user_info: dict 
     {
         "species_name": "Homo sapiens",
         "gene_symbols": ["ZNF212", "ZNF451", "PLAGL1", "NFAT5", "ICAM5", "RRAD"],
-        "clustering_method1": "fastgreedy",
-        "clustering_method2": "walktrap"
+        "clustering_method": "fastgreedy",
     }
     """
     try:
@@ -1258,8 +1259,7 @@ async def run_mapping_plotting(request: MappingPlottingRequest, user_info: dict 
             r_script_path,
             request.species_name,
             gene_symbols_json,
-            request.clustering_method1,
-            request.clustering_method2,
+            request.clustering_method,
             output_dir
         ]
 

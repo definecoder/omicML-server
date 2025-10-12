@@ -1,14 +1,13 @@
 # Parse command-line arguments
 args <- commandArgs(trailingOnly = TRUE)
-if (length(args) < 5) {
-  stop("Usage: Rscript script.R species_name gene_symbols_json clustering_method1 clustering_method2 output_dir")
+if (length(args) < 4) {
+  stop("Usage: Rscript script.R species_name gene_symbols_json clustering_method output_dir")
 }
 
 species_name <- args[1]
 gene_symbols_json <- args[2]
-clustering_method1 <- args[3] # For input gene clustering
-clustering_method2 <- args[4] # For matched gene clustering
-output_dir <- args[5]
+clustering_method <- args[3]
+output_dir <- args[4]
 
 
 print(output_dir)
@@ -67,11 +66,11 @@ plot_network(string_db, mapped_gene_str_IDs, gene_identity1)
 dev.off()
 
 ####################### Cluster Finder #######################
-clustering_methods <- c("fastgreedy", "walktrap", "spinglass", "edge.betweenness")
-print(clustering_methods)
+# clustering_methods <- c("fastgreedy", "walktrap", "spinglass", "edge.betweenness")
+# print(clustering_methods)
 
-# INPUT: Use clustering_method1 for clustering the input gene list
-find_all_clusters(gene_symbols, clustering_method1, output_dir)
+# INPUT: Use clustering_method for clustering the input gene list
+find_all_clusters(gene_symbols, clustering_method, output_dir)
 
 ####################### Enrichment Analysis for Input Genes #########
 input_genes_enrichment_analysis(mapped_gene_str_IDs, output_dir)
@@ -85,11 +84,6 @@ single_gene_analysis(single_gene_lists, output_dir)
 
 load_query_gene <- "string/Fibro_UP_genes.csv"
 matched_gene_ids <- query_gene_network_analysis(load_query_gene, mapped_gene_str_IDs, neighbor_genes_symbols, output_dir)
-
-##################### Cluster Finder for Matched Genes #######################
-print(clustering_methods)
-# INPUT: Use clustering_method2 for clustering the matched genes
-find_all_clusters(matched_gene_ids, clustering_method2, output_dir)
 
 ############################# Enrichment Analysis for Query Genes ############################
 query_genes_enrichment_analysis(matched_gene_ids, output_dir)
