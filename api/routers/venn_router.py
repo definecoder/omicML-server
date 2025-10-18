@@ -26,7 +26,14 @@ R_CODE_DIRECTORY = os.path.join(os.path.dirname(__file__), '../code')
 @router.post('/upload_for_venn')
 async def upload_for_venn(ann_df: UploadFile = File(...), user_info: dict = Depends(verify_token)):
     try:
-        FILE_DIR = os.path.join(R_CODE_DIRECTORY, f"{user_info['user_id']}", "annotation", "files")
+
+        os.makedirs(os.path.join(R_CODE_DIRECTORY, str(user_info['user_id']), "venn"), exist_ok=True)
+        os.makedirs(os.path.join(R_CODE_DIRECTORY, str(user_info['user_id']), "venn", "rds"), exist_ok=True)
+        os.makedirs(os.path.join(R_CODE_DIRECTORY, str(user_info['user_id']), "venn", "files"), exist_ok=True)
+        os.makedirs(os.path.join(R_CODE_DIRECTORY, str(user_info['user_id']), "venn", "figures"), exist_ok=True)
+
+
+        FILE_DIR = os.path.join(R_CODE_DIRECTORY, f"{user_info['user_id']}", "venn", "files")
         file1_path = os.path.join( FILE_DIR, ann_df.filename)
         with open(file1_path, "wb") as f:
             f.write(await ann_df.read())
@@ -48,7 +55,10 @@ async def venn_diagram(data: VennSchema , user_info: dict = Depends(verify_token
         files = data.file_list
         USER_DIR = os.path.join(R_CODE_DIRECTORY, str(user_info['user_id']))        
         for file in files:
-            shutil.copyfile(os.path.join(USER_DIR, file.file_path) , os.path.join(USER_DIR, "venn", "files", file.file_path.split("/")[-1]))
+            fp1 = os.path.join(USER_DIR, file.file_path)
+            fp2 = os.path.join(USER_DIR, "venn", "files", file.file_path.split("/")[-1])
+            if fp1 != fp2:
+                shutil.copyfile(fp1, fp2)
 
         
 

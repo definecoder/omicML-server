@@ -5,5 +5,8 @@
 !api/string/*.csv
 !api/code/globals/*.csv
 *.vscode
+
+__pycache__/
+*.pyc
 *api/venv
 api/*.*.pyc

@@ -64,17 +64,17 @@ RUN apt-get update && \
     apt-mark hold r-base
 
 # ---------------- Install R packages ----------------
-RUN R -e "install.packages('lme4', dependencies=TRUE)"
-RUN R -e "install.packages(c('ggplot2','tibble','tidyr','readr','purrr','dplyr','stringr','forcats','httr','gargle','googledrive','googlesheets4','rvest','covr'), repos='https://cran.r-project.org', dependencies=TRUE)"
+# Install BiocManager first
+RUN R -e "install.packages('BiocManager', repos='https://cran.r-project.org')"
 
-RUN R -e "install.packages('remotes', repos='https://cran.r-project.org'); \
-    remotes::install_version('BiocManager', version = '1.30.25', repos = 'https://cran.r-project.org'); \
-    BiocManager::install(version = '3.21'); \
-    BiocManager::install(c('WGCNA', 'DESeq2', 'limma', 'biomaRt', 'sva', 'STRINGdb')); \
-    install.packages(c('tidyverse', 'Rtsne', 'umap', 'ggplot2', \
-        'readr', 'ape', 'mice', 'dplyr', 'gplots', \
-        'ggVennDiagram', 'pheatmap', 'RColorBrewer', \
-        'stringr'), repos='https://cran.r-project.org', dependencies=TRUE);"
+# Set Bioconductor version to 3.21 - this will manage compatible package versions
+RUN R -e "BiocManager::install(version = '3.21', ask = FALSE, update = TRUE)"
+
+# Install Bioconductor packages - BiocManager ensures version compatibility within Bioc 3.21
+RUN R -e "BiocManager::install(c('WGCNA', 'DESeq2', 'limma', 'biomaRt', 'sva', 'STRINGdb', 'apeglm', 'impute'), ask = FALSE, update = FALSE)"
+
+# Install CRAN packages - let BiocManager handle compatibility with Bioconductor
+RUN R -e "BiocManager::install(c('tidyverse', 'Rtsne', 'umap', 'ggplot2', 'readr', 'ape', 'mice', 'dplyr', 'gplots', 'ggVennDiagram', 'pheatmap', 'RColorBrewer', 'stringr', 'here', 'lme4'), ask = FALSE)"
 
 
 

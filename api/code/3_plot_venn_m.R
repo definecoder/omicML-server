@@ -1,11 +1,3 @@
-# Function to install and load required packages
-install_and_load <- function(package) {
-  if (!requireNamespace(package, quietly = TRUE)) {
-    install.packages(package)
-  }
-  library(package, character.only = TRUE)
-}
-
 # Function to create Venn diagram, compute intersections, and save results
 plot_and_save_venn <- function(gene_lists, reg) {
   # Check if at least two lists are provided
@@ -14,9 +6,9 @@ plot_and_save_venn <- function(gene_lists, reg) {
     return(NULL)
   }
 
-  # Install and load required packages
-  install_and_load("ggplot2")
-  install_and_load("ggVennDiagram")
+  # Load required packages (pre-installed in Docker)
+  library(ggplot2)
+  library(ggVennDiagram)
 
   # Generate the Venn diagram with custom hex colors
   venn_plot <- ggVennDiagram(
@@ -24,13 +16,13 @@ plot_and_save_venn <- function(gene_lists, reg) {
     label       = "count",
     label_geom  = "label",
     label_alpha = 0.85,
-    label_fill  = "#1f2937",   # dark gray box background
-    label_color = "#f9fafb",   # almost white text
+    label_fill  = "#1f2937", # dark gray box background
+    label_color = "#f9fafb", # almost white text
     label_size  = 3.6,
     edge_size   = 0.8
-  ) 
-  
-  
+  )
+
+
   # +
   #   # Apply gradient fill using hex colors
   #   scale_fill_gradient(

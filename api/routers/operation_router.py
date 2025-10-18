@@ -455,7 +455,7 @@ async def benchmark_models_api(user_info: dict = Depends(verify_token)):
 
 from code.code import get_model_and_importance_with_top10, best_models
 from fastapi import Form
-global_model_name  = "Extra Trees" 
+global_model_name = "Extra Trees" 
 global_basef_name = "top10_features_extra_trees.csv"
 
 @router.post('/top10-features')
@@ -471,7 +471,7 @@ async def top10_features(model_name: str = Form(...), user_info: dict = Depends(
         reduced_df_path = os.path.join("code", user_id, "files", "selected_features_RFE_RF.csv")
         output_dir = os.path.join("code", user_id, "files")
 
-
+        global global_model_name, global_basef_name
         global_model_name =  model_name 
 
         # Load reduced DataFrame
@@ -493,7 +493,7 @@ async def top10_features(model_name: str = Form(...), user_info: dict = Depends(
             user_info=user_info
         )
 
-        global_basef_name = result['top10_features_path']
+        global_basef_name = result['top10_features_path'].split("/")[-1]
 
         return {
             "message": "Top 10 features extracted successfully.",
@@ -519,6 +519,9 @@ async def visualize_dimensions_api(
     """
     try:
         # Define file paths
+
+        print(global_basef_name)
+
         user_id = str(user_info['user_id'])
         input_file = os.path.join("code", user_id, "files", global_basef_name)
         output_dir = os.path.join("code", user_id, "files")

@@ -1,7 +1,2 @@
-# Function to check, install, and load required packages
-install_and_load <- function(pkg) {
-  if (!require(pkg, character.only = TRUE)) {
-    install.packages(pkg, dependencies = TRUE)
-    library(pkg, character.only = TRUE)
-  }
-}
+# All packages are pre-installed in the Docker image
+# No need for installation function

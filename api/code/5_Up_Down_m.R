@@ -1,9 +1,4 @@
-# Install ggplot2 if not already installed
-if (!requireNamespace("ggplot2", quietly = TRUE)) {
-  install.packages("ggplot2")
-}
-
-# Load the ggplot2 library
+# Load the ggplot2 library (pre-installed in Docker)
 library(ggplot2)
 
 

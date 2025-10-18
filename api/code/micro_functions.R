@@ -1,55 +1,26 @@
-# Function to load and install required libraries
+# Function to load required libraries (all packages are pre-installed in Docker)
 
 print("loading micro functions")
 
 load_and_install_libraries <- function() {
-    # CRAN packages
-    cran_packages <- c("readr", "limma", "umap", "ggplot2", "Rtsne", "ape", "mice", "tidyverse")
-
-    # Bioconductor packages
-    bioc_packages <- c("DESeq2", "apeglm", "impute", "WGCNA")
-
-    # Ensure BiocManager is available
-    if (!requireNamespace("BiocManager", quietly = TRUE)) {
-        install.packages("BiocManager", repos = "http://cran.us.r-project.org")
-    }
-
-    # Helper function for CRAN packages
-    install_cran_if_missing <- function(pkg) {
-        if (!requireNamespace(pkg, quietly = TRUE)) {
-            message(sprintf("Installing CRAN package: %s ...", pkg))
-            install.packages(pkg, dependencies = TRUE, repos = "http://cran.us.r-project.org")
-        }
-        # Retry loading until successful
-        if (!requireNamespace(pkg, quietly = TRUE)) {
-            stop(sprintf("Failed to install CRAN package: %s", pkg))
-        }
-        suppressPackageStartupMessages(library(pkg, character.only = TRUE))
-    }
-
-    # Helper function for Bioconductor packages
-    install_bioc_if_missing <- function(pkg) {
-        if (!requireNamespace(pkg, quietly = TRUE)) {
-            message(sprintf("Installing Bioconductor package: %s ...", pkg))
-            BiocManager::install(pkg, ask = FALSE)
-        }
-        if (!requireNamespace(pkg, quietly = TRUE)) {
-            stop(sprintf("Failed to install Bioconductor package: %s", pkg))
-        }
-        suppressPackageStartupMessages(library(pkg, character.only = TRUE))
-    }
-
-    # Install and load CRAN packages
-    for (pkg in cran_packages) {
-        install_cran_if_missing(pkg)
-    }
-
-    # Install and load Bioconductor packages
-    for (pkg in bioc_packages) {
-        install_bioc_if_missing(pkg)
-    }
-
-    message("All packages installed and loaded successfully!")
+    # All packages are pre-installed in the Docker image
+    # Load required CRAN packages
+    suppressPackageStartupMessages(library(readr))
+    suppressPackageStartupMessages(library(limma))
+    suppressPackageStartupMessages(library(umap))
+    suppressPackageStartupMessages(library(ggplot2))
+    suppressPackageStartupMessages(library(Rtsne))
+    suppressPackageStartupMessages(library(ape))
+    suppressPackageStartupMessages(library(mice))
+    suppressPackageStartupMessages(library(tidyverse))
+    
+    # Load required Bioconductor packages
+    suppressPackageStartupMessages(library(DESeq2))
+    suppressPackageStartupMessages(library(apeglm))
+    suppressPackageStartupMessages(library(impute))
+    suppressPackageStartupMessages(library(WGCNA))
+    
+    message("All packages loaded successfully!")
 }
 
 impute_missing_values_mice <- function(data) {
