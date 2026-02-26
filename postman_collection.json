@@ -1,0 +1,1339 @@
+{
+	"info": {
+		"_postman_id": "08fd90ce-201e-4880-ae53-015544348992",
+		"name": "PLAGL1 Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28297442"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"docker@gmail.com\",\n    \"name\" : \"docker\",\n    \"password\": \"123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/auth/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"shawon.majid@gmail.com\",\n  \"password\": \"123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "preinit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "heatmap_data",
+							"type": "file",
+							"src": "/Users/shawonmajid/Downloads/Heatmap_data.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/preinit",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"preinit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/auth/allusers",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiU2hhd29uIE1hamlkIiwiZW1haWwiOiJzaGF3b24ubWFqaWRAZ21haWwuY29tIiwiZXhwIjoxNzI0NjM5NTIwfQ.aPXA3MFXGIyZFkX361A_4wg3e-JUvjUxdDB_dEfgJDA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/auth/allusers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"auth",
+						"allusers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "file upload and initialization",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiU2hhd29uIE1hamlkIiwiZW1haWwiOiJzaGF3b24ubWFqaWRAZ21haWwuY29tIiwiZXhwIjoxNzM0MDM5ODAwfQ.TS0xYP8Qne5jP4HJx7P7IhQ5PYZxIT6yCDXWpk06Yi4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "count_data",
+							"type": "file",
+							"src": [],
+							"disabled": true
+						},
+						{
+							"key": "meta_data",
+							"type": "file",
+							"src": [],
+							"disabled": true
+						},
+						{
+							"key": "merged_file",
+							"type": "file",
+							"src": "/C:/Users/Siam/Downloads/merged_df_data_normalized_t.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/init",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"init"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "analysis",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"analyze"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Figures",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJuYW1lIjoiTWVocmFqIiwiZW1haWwiOiJjb2Rlcm1laHJhakBnbWFpbC5jb20iLCJleHAiOjE3MjUyMzA2MzF9.7Ncx1mntEV1yIToWNcsBYQXimV_xXky3pxPSjKD95RU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/figures/1/Boxplot_norm.pdf",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"figures",
+						"1",
+						"Boxplot_norm.pdf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "files",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJuYW1lIjoiTWVocmFqIiwiZW1haWwiOiJjb2Rlcm1laHJhakBnbWFpbC5jb20iLCJleHAiOjE3MjUyMzA2MzF9.7Ncx1mntEV1yIToWNcsBYQXimV_xXky3pxPSjKD95RU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/files/1/count_data.csv",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"files",
+						"1",
+						"count_data.csv"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "remove outliers",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiU2hhd29uIE1hamlkIiwiZW1haWwiOiJzaGF3b24ubWFqaWRAZ21haWwuY29tIiwiZXhwIjoxNzM0MDAzNTQ0fQ.gMjjSLM4yVXxW0amv-aaueKLBP9J0JX4oDcp39bQhuw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"genes\": [\n        \"GSM6765254\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/remove_outliers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"remove_outliers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get conditions",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiU2hhd29uIE1hamlkIiwiZW1haWwiOiJzaGF3b24ubWFqaWRAZ21haWwuY29tIiwiZXhwIjoxNzM0MDAzNTQ0fQ.gMjjSLM4yVXxW0amv-aaueKLBP9J0JX4oDcp39bQhuw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/conditions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"conditions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get coefficients",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJuYW1lIjoiU2hhd29uIE1hamlkIiwiZW1haWwiOiJzaGF3b24ubWFqaWRAZ21haWwuY29tIiwiZXhwIjoxNzM0MDAzNTQ0fQ.gMjjSLM4yVXxW0amv-aaueKLBP9J0JX4oDcp39bQhuw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/select_condition?option=MPXV_clade_IIb_infected",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"select_condition"
+					],
+					"query": [
+						{
+							"key": "option",
+							"value": "MPXV_clade_IIb_infected"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get volcano",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/volcano?coeff=Treatment_mock_vs_MPXV_clade_IIb_infected",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"volcano"
+					],
+					"query": [
+						{
+							"key": "coeff",
+							"value": "Treatment_mock_vs_MPXV_clade_IIb_infected"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get highlighted volcano",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"genes\":[\"ENSG00000021355\", \"ENSG00000167996\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/highlighted_volcano",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"highlighted_volcano"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload and init micro",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "count_data",
+							"type": "file",
+							"src": "/Users/shawonmajid/Downloads/Full_Expression_11234.csv"
+						},
+						{
+							"key": "meta_data",
+							"type": "file",
+							"src": "/Users/shawonmajid/Downloads/Metadata_11234_F.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/micro/init",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"micro",
+						"init"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "analysis micro",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/micro/analyze",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"micro",
+						"analyze"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "remove outliers micro",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"genes\": [\n        \"GSM283403\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/micro/remove_outliers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"micro",
+						"remove_outliers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get conditions micro",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/micro/conditions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"micro",
+						"conditions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Volcano Micro",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/micro/volcano?reference=Mpox",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"micro",
+						"volcano"
+					],
+					"query": [
+						{
+							"key": "reference",
+							"value": "Mpox"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "highlighted volcano micro",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"genes\":[\"2175\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/micro/highlighted_volcano",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"micro",
+						"highlighted_volcano"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get organism names",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/annotation/organism_names",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"annotation",
+						"organism_names"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "annotate_genes",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "organism_name",
+							"value": "Human genes (GRCh38.p14)",
+							"type": "text"
+						},
+						{
+							"key": "id_type",
+							"value": "entrez",
+							"type": "text"
+						},
+						{
+							"key": "files",
+							"type": "file",
+							"src": [
+								"/Users/shawonmajid/Documents/PLAGL1_Project_2/Annotation_volcano/7_LFC_Monocyte_Mice_FROM_36_Samples.csv",
+								"/Users/shawonmajid/Documents/PLAGL1_Project_2/Annotation_volcano/7_LFC_Mice_FROM_16_Samples.csv"
+							]
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/annotation/annotate_genes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"annotation",
+						"annotate_genes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "annotated_volcano",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"gene_list\" : [\n        \"CCND1\", \"HSD17B10\", \"LPAR3\", \"SNRPC\", \"HSD17B4\", \"TBC1D4\", \"CTSD\", \"ZNF451\", \"GATA6\",\n        \"PLAGL1\", \"ICAM5\", \"RRAD\", \"ZNF212\", \"DHX38\", \"GDF9\", \"BCL10\", \"MGRN1\", \"SLC9A8\",\n        \"PHTF1\", \"NUP58\", \"PIK3CD\", \"NFAT5\", \"RFPL3S\", \"CARS1\", \"UBXN7\", \"DIO2\", \"PKNOX1\",\n        \"MSI1\", \"ZNF266\", \"SZT2\", \"DMPK\", \"NEDD4L\", \"FOSL1\", \"SIN3B\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/annotation/annotated_volcano",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"annotation",
+						"annotated_volcano"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload for venn",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "ann_df",
+							"type": "file",
+							"src": "/Users/shawonmajid/Downloads/venn-sample-files/venn_down_annotation_ensemble_2.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/venn/upload_for_venn",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"venn",
+						"upload_for_venn"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get list of all files",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/list_of_files",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"list_of_files"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "venn",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"file_list\":[{\"file_path\":\"venn/files/venn_down_annotation_ensemble_2.csv\",\"name\":\"venn_down_annotation_ensemble_2\"},{\"file_path\":\"venn/files/venn_down_annotation_entrez_1.csv\",\"name\":\"venn_down_annotation_entrez_1\"},{\"file_path\":\"venn/files/venn_down_annotation_ensemble_3.csv\",\"name\":\"venn_down_annotation_ensemble_3\"}],\"ven_reg\":\"up\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/venn/venn_diagram",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"venn",
+						"venn_diagram"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get list of annotated files",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/list_of_annotated_files",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"list_of_annotated_files"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Input data for heatmap diagram",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"gene_list\": [\"CCND1\", \"HSD17B10\", \"LPAR3\", \"SNRPC\", \"HSD17B4\", \"TBC1D4\", \"CTSD\", \"ZNF451\", \n               \"GATA6\", \"PLAGL1\", \"ICAM5\", \"RRAD\", \"ZNF212\", \"DHX38\", \"GDF9\", \"BCL10\", \n               \"MGRN1\", \"SLC9A8\", \"PHTF1\", \"NUP58\", \"PIK3CD\", \"NFAT5\", \"RFPL3S\", \"CARS1\", \n               \"UBXN7\", \"DIO2\", \"PKNOX1\", \"MSI1\", \"ZNF266\", \"SZT2\", \"DMPK\", \"NEDD4L\", \n               \"FOSL1\", \"SIN3B\"],\n    \"file_list\": [\n        \"annotation/files/annotated_Upregulated_padj_7_LFC_Monocyte_Mice_FROM_36_Samples.csv\",\n        \"annotation/files/annotated_Upregulated_padj_7_LFC_Mice_FROM_16_Samples.csv\",\n        \"annotation/files/annotated_resLFC_Treatment_MPXV.clade.IIb.infected_vs_mock.csv\",\n        \"annotation/files/annotated_7_LFC_Mice_FROM_16_Samples.csv\",\n        \"annotation/files/annotated_7_LFC_Monocyte_Mice_FROM_36_Samples.csv\",\n        \"annotation/files/annotated_resLFC_Treatment_MPXV.clade.I.infected_vs_mock.csv\",\n        \"annotation/files/annotated_resLFC_Treatment_MPXV.clade.IIa.infected_vs_mock.csv\"\n\n    ],\n    \"column_names\": [\n        \"Clade_IIb\", \"Zaire_F\", \"Zaire_M\", \"Clade_I\", \"Clade_IIa\"\n    ]\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/heatmap/init_pipeline",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"heatmap",
+						"init_pipeline"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload annotation data heatmpa",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "ann_df",
+							"type": "file",
+							"src": "/Users/shawonmajid/Downloads/Heatmap_annotation (1).csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/heatmap/upload_annotation_df",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"heatmap",
+						"upload_annotation_df"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "removing annotation df",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/heatmap/remove_annotation_df",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"heatmap",
+						"remove_annotation_df"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get heatmap diagram",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/heatmap/heatmap_diagram",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"heatmap",
+						"heatmap_diagram"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "custom heatmap diagram",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "heatmap_data",
+							"type": "file",
+							"src": "/Users/shawonmajid/Downloads/Heatmap_data.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/heatmap/custom_heatmap_diagram",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"heatmap",
+						"custom_heatmap_diagram"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "upload_merge",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "merged_df_data_normalized_t",
+							"type": "file",
+							"src": "/Users/shawonmajid/Downloads/merged_df_data_normalized_t.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/upload-merge",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"upload-merge"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "batch-effect-correction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/batch-effect-correction",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"batch-effect-correction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "z_score_normalize",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/z_score_normalize",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"z_score_normalize"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "visualize-dimensions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/visualize-dimensions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"visualize-dimensions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "plot-correlation-clustermap",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/plot-correlation-clustermap",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"plot-correlation-clustermap"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "feature-selection-model",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/feature-selection-model?selection_ratio=0.5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"feature-selection-model"
+					],
+					"query": [
+						{
+							"key": "selection_ratio",
+							"value": "0.5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find-best-model",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/find-best-model",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"find-best-model"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "top10-features",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "model_name",
+							"value": "Extra Trees",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/top10-features",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"top10-features"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "visualize-dimensions_10_feature",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/visualize_dimensionality_reduction_feature",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"visualize_dimensionality_reduction_feature"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "evaluate-single-features",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/evaluate-single-features",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"evaluate-single-features"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "evaluate-top-features",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/evaluate_model_with_features",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"evaluate_model_with_features"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "visualize_dimensionality_reduction_final",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/visualize_dimensionality_reduction_final",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"visualize_dimensionality_reduction_final"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "evaluate-final-model",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/operations/evaluate-final-model",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"evaluate-final-model"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Fibro Up Genes",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "fibro_up_genes",
+							"type": "file",
+							"src": "/Users/shawonmajid/Downloads/Fibro_UP_genes.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/upload-fibro-string",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"upload-fibro-string"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "string pipeline",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"species_name\": \"Homo sapiens\",\r\n    \"gene_symbols\": [\"ZNF212\", \"ZNF451\", \"PLAGL1\", \"NFAT5\", \"ICAM5\", \"RRAD\"],\r\n    \"clustering_method1\":\"fastgreedy\",\r\n    \"clustering_method2\":\"walktrap\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/operations/string",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"operations",
+						"string"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo4LCJuYW1lIjoicmlwb24iLCJlbWFpbCI6InJpcG9uQGdtYWlsLmNvbSIsImV4cCI6MTc2MTA1ODE4OX0.A6xCRKDeo-rxSHi_ioSahqbJZOzlW9h7LNZyuNJg5JE",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
