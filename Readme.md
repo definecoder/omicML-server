@@ -1,10 +1,26 @@
-# omicML — Omics Machine Learning Analysis Server
+# omicML: a bioinformatics and machine learning based graphical user interface for transcriptomic biomarker identification
 
-A FastAPI-based backend server for end-to-end omics data analysis, developed in the context of studying PLAGL1 expression in Mpox infection. The platform supports RNA-seq and microarray workflows, integrating differential gene expression (DGE) analysis, dimensionality reduction, machine learning, gene annotation, and STRING protein–protein interaction network analysis.
+An intuitive graphical user interface that combines transcriptomic data analysis with ML-based classification via integrating R and Python packages/libraries. It supports both RNA-Seq and microarray data following automatic preprocessing and differential expression analysis. It annotates differentially expressed genes with descriptions, gene ontology, and pathway information and incorporates comparative analysis. The extensive ML pipeline sequentially enables both unsupervised and supervised learning, benchmarks multiple ML classifiers, assesses feature importance, develops single-gene and multi-gene predictive models, and systematically finalizes the biomarker algorithm.
 
-**Production instance:** https://backend.omicml.org
-**Frontend:** https://omicml.org
-**Repository:** https://github.com/definecoder/omicML-server
+
+- **Production instance:** https://backend.omicml.org
+- **Frontend:** https://omicml.org
+- **Repository:** https://github.com/definecoder/omicML-server
+
+---
+## Preprint
+
+**bioRxiv**
+
+**omicML: An Integrative Bioinformatics and Machine Learning Framework for Transcriptomic Biomarker Identification**
+
+Joy Prokash Debnath, Kabir Hossen, Md. Sayeam Khandaker, Shawon Majid, Md Mehrajul Islam, Siam Arefin, Preonath Chondrow Dev, Saifuddin Sarker, Tanvir Hossain
+
+bioRxiv, Cold Spring Harbor Laboratory (2025)
+
+DOI: [10.1101/2025.10.25.684517](https://doi.org/10.1101/2025.10.25.684517)
+
+[View PDF](https://www.biorxiv.org/content/10.1101/2025.10.25.684517v1.full.pdf)
 
 ---
 
@@ -32,7 +48,7 @@ A FastAPI-based backend server for end-to-end omics data analysis, developed in 
 | **Microarray Analysis** | Limma-based DGE, before/after normalization QC |
 | **Quality Control** | PCA, t-SNE, UMAP, hierarchical clustering, K-means, boxplots |
 | **Batch Effect Correction** | SVA (Surrogate Variable Analysis) |
-| **Machine Learning** | Feature selection, model benchmarking (XGBoost, Random Forest, SVM) |
+| **Machine Learning** | Feature selection, model benchmarking (XGBoost, Random Forest) |
 | **Gene Annotation** | BiomaRt-based ID mapping across multiple organisms and ID types |
 | **Venn Diagrams** | Multi-set gene list comparison |
 | **Heatmaps** | Publication-ready annotated heatmaps |
@@ -457,7 +473,7 @@ A [Postman collection](postman_collection.json) is also included in the reposito
 
 If you use omicML in your research, please cite:
 
-> *Manuscript in preparation.*
+> Debnath, J.P., Hossen, K., Khandaker, M.S., Majid, S., Islam, M.M., Arefin, S., Chondrow Dev, P., Sarker, S. and Hossain, T., 2025. omicML: An Integrative Bioinformatics and Machine Learning Framework for Transcriptomic Biomarker Identification. *bioRxiv*, pp.2025-10.
 
 ---
 
